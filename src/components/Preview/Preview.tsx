@@ -8,6 +8,6 @@ const PreviewContainer = styled.div`
   border: 1px solid black;
 `;
 
-export const Preview = () => {
-  return <PreviewContainer />;
+export const Preview = (props) => {
+  return <PreviewContainer>{props.text}</PreviewContainer>;
 };
