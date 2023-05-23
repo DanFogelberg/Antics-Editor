@@ -24,7 +24,10 @@ export const Editor = (props) => {
 
   return (
     <EditorContainer>
-      <TextArea onChange={(e) => handleChange(e.target.value)} />
+      <TextArea
+        placeholder="# = h1, ## = h2, ### = h3, enter = new line"
+        onChange={(e) => handleChange(e.target.value)}
+      />
     </EditorContainer>
   );
 };
