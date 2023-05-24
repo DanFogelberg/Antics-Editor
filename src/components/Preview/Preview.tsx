@@ -16,14 +16,16 @@ export const Preview = (props) => {
   return (
     <PreviewContainer>
       {textArray.map((text) => {
-        if (text.startsWith("###")) {
-          return <h3>{text.replace(/^###/, "")}</h3>;
-        } else if (text.startsWith("##")) {
-          return <h2>{text.replace(/^##/, "")}</h2>;
-        } else if (text.startsWith("#")) {
-          return <h1>{text.replace(/^#/, "")}</h1>;
+        switch (true) {
+          case text.startsWith("###"):
+            return <h3>{text.replace(/^###/, "")}</h3>;
+          case text.startsWith("##"):
+            return <h2>{text.replace(/^##/, "")}</h2>;
+          case text.startsWith("#"):
+            return <h1>{text.replace(/^#/, "")}</h1>;
+          default:
+            return <p>{text}</p>;
         }
-        return <p>{text}</p>;
       })}
     </PreviewContainer>
   );
