@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import React from "react";
+import "../Preview/Preview.css";
 
 const PreviewContainer = styled.div`
   width: 40vw;
