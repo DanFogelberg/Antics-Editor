@@ -17,11 +17,11 @@ export const Preview = (props) => {
     <PreviewContainer>
       {textArray.map((text) => {
         if (text.startsWith("###")) {
-          return <h3>{text}</h3>;
+          return <h3>{text.replace(/^###/, "")}</h3>;
         } else if (text.startsWith("##")) {
-          return <h2>{text}</h2>;
+          return <h2>{text.replace(/^##/, "")}</h2>;
         } else if (text.startsWith("#")) {
-          return <h1>{text}</h1>;
+          return <h1>{text.replace(/^#/, "")}</h1>;
         }
         return <p>{text}</p>;
       })}
