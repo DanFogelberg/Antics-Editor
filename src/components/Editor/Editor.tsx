@@ -29,11 +29,12 @@ type EditorProps = {
 
 //ta emot setText och typa upp det
 
+let heading: string = "regular";
+
 export const Editor = (props: EditorProps) => {
   const [text, setText] = React.useState("");
-  const [heading, setHeading] = React.useState("regular");
-  const handleHeading = (value: string) => {
-    setHeading(value);
+  const handleHeading = (newHeading: string) => {
+    heading = newHeading;
     textAreaRef.current?.focus();
     handleChange(text);
   };
