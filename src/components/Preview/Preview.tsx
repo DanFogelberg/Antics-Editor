@@ -10,7 +10,11 @@ const PreviewContainer = styled.div`
   white-space: pre;
 `;
 
-export const Preview = (props) => {
+type PreviewProps = {
+  text: string;
+}
+
+export const Preview = (props: PreviewProps) => {
   const text: string = props.text;
   const textArray: string[] = text.split("\n");
   console.log(textArray);

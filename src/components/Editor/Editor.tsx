@@ -14,9 +14,14 @@ const TextArea = styled.textarea`
   resize: none;
 `;
 
+type EditorProps = {
+  setText: Function;
+    
+}
+
 //ta emot setText och typa upp det
 
-export const Editor = (props) => {
+export const Editor = (props: EditorProps) => {
   const handleChange = (newText: string) => {
     props.setText(newText);
     console.log(newText);
