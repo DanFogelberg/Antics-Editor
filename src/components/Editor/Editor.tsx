@@ -29,28 +29,30 @@ type EditorProps = {
 
 let text: string = "";
 export const Editor = (props: EditorProps) => {
+  const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
   const handleChange = (newText: string) => {
     // hitta enter tecknet och lägg in #, ##, ### beroende på heading
+    const currentPosition: number | undefined =
+      textAreaRef.current?.selectionStart;
+    const currentLineIndex: number = newText
+      .substring(0, currentPosition)
+      .lastIndexOf("\n");
+    console.log(currentLineIndex);
+    console.log(newText[currentLineIndex]);
 
-    if (heading === "h1") {
-      if (newText.startsWith("#")) {
-        props.setText(newText);
-      } else {
-        newText = `#${newText}`;
-      }
-    } else if (heading === "h2") {
-      if (newText.startsWith("##")) {
-        props.setText(newText);
-      } else {
-        newText = `##${newText}`;
-      }
-    } else if (heading === "h3") {
-      if (newText.startsWith("###")) {
-        props.setText(newText);
-      } else {
-        newText = `###${newText}`;
-      }
-    }
+    let newHeading = "";
+    while (newText.substring(currentLineIndex + 1).startsWith("#"))
+      newText =
+        newText.slice(0, currentLineIndex + 1) +
+        newText.slice(currentLineIndex + 2);
+    if (heading === "h1") newHeading = "#";
+    if (heading === "h2") newHeading = "##";
+    if (heading === "h3") newHeading = "###";
+
+    newText =
+      newText.slice(0, currentLineIndex + 1) +
+      newHeading +
+      newText.slice(currentLineIndex + 1);
     props.setText(newText);
     console.log(newText);
     text = newText;
@@ -80,6 +82,7 @@ export const Editor = (props: EditorProps) => {
         placeholder="# = h1, ## = h2, ### = h3, enter = new line"
         onChange={(e) => handleChange(e.target.value)}
         value={text}
+        ref={textAreaRef}
       ></TextArea>
     </EditorContainer>
   );
