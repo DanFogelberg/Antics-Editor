@@ -42,23 +42,21 @@ export const Editor = (props: EditorProps) => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
-    setText(
-      text.slice(0, currentPosition) + "b{}" + text.slice(currentPosition)
-    );
+    const newText = text.slice(0, currentPosition) + "b{}" + text.slice(currentPosition);
+    handleChange(newText, 2);
+
   };
 
   const setCursive = () => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
-    setText(
-      text.slice(0, currentPosition) + "c{}" + text.slice(currentPosition)
-    );
+    const newText = text.slice(0, currentPosition) + "c{}" + text.slice(currentPosition);
+    handleChange(newText, 2);
   };
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
-  const handleChange: Function = (newText: string) => {
-    // hitta enter tecknet och lägg in #, ##, ### beroende på heading
+  const handleChange: Function = (newText: string, positionOffset: number = 0) => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     console.log(currentPosition);
@@ -69,19 +67,27 @@ export const Editor = (props: EditorProps) => {
     console.log(newText[currentLineIndex]);
 
     let newHeading: string = "";
-    while (newText.substring(currentLineIndex + 1).startsWith("#"))
+    while (newText.substring(currentLineIndex + 1).startsWith("#")){
       newText =
         newText.slice(0, currentLineIndex + 1) +
         newText.slice(currentLineIndex + 2);
+      positionOffset--;
+
+    }
+      
+
     switch (heading) {
       case "h1":
         newHeading = "#";
+        positionOffset++;
         break;
       case "h2":
         newHeading = "##";
+        positionOffset+=2;
         break;
       case "h3":
         newHeading = "###";
+        positionOffset+=3;
         break;
     }
 
@@ -92,6 +98,8 @@ export const Editor = (props: EditorProps) => {
     props.setText(newText);
     console.log(newText);
     setText(newText);
+    if(textAreaRef.current) textAreaRef.current.value = newText;
+    if(textAreaRef.current && currentPosition) textAreaRef.current.setSelectionRange(currentPosition + positionOffset, currentPosition + positionOffset)
   };
 
   return (
@@ -114,7 +122,7 @@ export const Editor = (props: EditorProps) => {
       <TextArea
         placeholder="# = h1, ## = h2, ### = h3, enter = new line"
         onChange={(e) => handleChange(e.target.value)}
-        value={text}
+        // value={text}
         ref={textAreaRef}
       ></TextArea>
     </EditorContainer>
