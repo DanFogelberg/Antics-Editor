@@ -42,21 +42,25 @@ export const Editor = (props: EditorProps) => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
-    const newText = text.slice(0, currentPosition) + "b{}" + text.slice(currentPosition);
+    const newText =
+      text.slice(0, currentPosition) + "b{}b" + text.slice(currentPosition);
     handleChange(newText, 2);
-
   };
 
   const setCursive = () => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
-    const newText = text.slice(0, currentPosition) + "c{}" + text.slice(currentPosition);
+    const newText =
+      text.slice(0, currentPosition) + "c{}c" + text.slice(currentPosition);
     handleChange(newText, 2);
   };
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
-  const handleChange: Function = (newText: string, positionOffset: number = 0) => {
+  const handleChange: Function = (
+    newText: string,
+    positionOffset: number = 0
+  ) => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     console.log(currentPosition);
@@ -67,14 +71,12 @@ export const Editor = (props: EditorProps) => {
     console.log(newText[currentLineIndex]);
 
     let newHeading: string = "";
-    while (newText.substring(currentLineIndex + 1).startsWith("#")){
+    while (newText.substring(currentLineIndex + 1).startsWith("#")) {
       newText =
         newText.slice(0, currentLineIndex + 1) +
         newText.slice(currentLineIndex + 2);
       positionOffset--;
-
     }
-      
 
     switch (heading) {
       case "h1":
@@ -83,11 +85,11 @@ export const Editor = (props: EditorProps) => {
         break;
       case "h2":
         newHeading = "##";
-        positionOffset+=2;
+        positionOffset += 2;
         break;
       case "h3":
         newHeading = "###";
-        positionOffset+=3;
+        positionOffset += 3;
         break;
     }
 
@@ -98,8 +100,12 @@ export const Editor = (props: EditorProps) => {
     props.setText(newText);
     console.log(newText);
     setText(newText);
-    if(textAreaRef.current) textAreaRef.current.value = newText;
-    if(textAreaRef.current && currentPosition) textAreaRef.current.setSelectionRange(currentPosition + positionOffset, currentPosition + positionOffset)
+    if (textAreaRef.current) textAreaRef.current.value = newText;
+    if (textAreaRef.current && currentPosition)
+      textAreaRef.current.setSelectionRange(
+        currentPosition + positionOffset,
+        currentPosition + positionOffset
+      );
   };
 
   return (
