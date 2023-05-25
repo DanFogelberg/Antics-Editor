@@ -19,6 +19,8 @@ const EditorInterface = styled.div`
   width: 40vw;
   height: 2vh;
   background-color: grey;
+  display: flex;
+  flex-direction: row;
 `;
 
 type EditorProps = {
@@ -27,10 +29,23 @@ type EditorProps = {
 
 //ta emot setText och typa upp det
 
-let text: string = "";
 export const Editor = (props: EditorProps) => {
+  const [text, setText] = React.useState("");
+  const [heading, setHeading] = React.useState("regular");
+  const handleHeading = (value: string) => {
+    setHeading(value);
+  };
+  const setBold = () => {
+    const currentPosition: number | undefined =
+      textAreaRef.current?.selectionStart;
+    setText(
+      text.slice(0, currentPosition) + "b{}" + text.slice(currentPosition)
+    );
+  };
+
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
-  const handleChange = (newText: string) => {
+
+  const handleChange: Function = (newText: string) => {
     // hitta enter tecknet och lägg in #, ##, ### beroende på heading
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
@@ -40,7 +55,7 @@ export const Editor = (props: EditorProps) => {
     console.log(currentLineIndex);
     console.log(newText[currentLineIndex]);
 
-    let newHeading = "";
+    let newHeading: string = "";
     while (newText.substring(currentLineIndex + 1).startsWith("#"))
       newText =
         newText.slice(0, currentLineIndex + 1) +
@@ -63,12 +78,7 @@ export const Editor = (props: EditorProps) => {
       newText.slice(currentLineIndex + 1);
     props.setText(newText);
     console.log(newText);
-    text = newText;
-  };
-
-  const [heading, setHeading] = React.useState("regular");
-  const handleHeading = (value: string) => {
-    setHeading(value);
+    setText(newText);
   };
 
   return (
@@ -84,6 +94,9 @@ export const Editor = (props: EditorProps) => {
             <option value="h2">h2</option>
             <option value="h3">h3</option>
           </select>
+        </div>
+        <div className="bold">
+          <button onClick={(e) => setBold()}>B</button>
         </div>
       </EditorInterface>
       <TextArea
