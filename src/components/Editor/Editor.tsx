@@ -45,9 +45,17 @@ export const Editor = (props: EditorProps) => {
       newText =
         newText.slice(0, currentLineIndex + 1) +
         newText.slice(currentLineIndex + 2);
-    if (heading === "h1") newHeading = "#";
-    if (heading === "h2") newHeading = "##";
-    if (heading === "h3") newHeading = "###";
+    switch (heading) {
+      case "h1":
+        newHeading = "#";
+        break;
+      case "h2":
+        newHeading = "##";
+        break;
+      case "h3":
+        newHeading = "###";
+        break;
+    }
 
     newText =
       newText.slice(0, currentLineIndex + 1) +
