@@ -7,12 +7,14 @@ const PreviewContainer = styled.div`
   height: 70vh;
   background-color: whitesmoke;
   border: 1px solid black;
+  white-space: pre;
 `;
 
 export const Preview = (props) => {
   const text: string = props.text;
   const textArray: string[] = text.split("\n");
   console.log(textArray);
+  console.log(text);
   return (
     <PreviewContainer>
       {textArray.map((text) => {
