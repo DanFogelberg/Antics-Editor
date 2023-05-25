@@ -27,30 +27,10 @@ export const Preview = (props: PreviewProps) => {
 
         //bryt varje gång du har en öppnande tagg och en stängande tagg och gör om till bold
 
-        // wordArray.map((word) => {
-        //   console.log(word);
-        //   if (word.startsWith("b{") && word.endsWith("}b")) {
-        //     return <b>{word.replace(/b{/, "").replace(/}b/, "")}</b>;
-        //   }
+        text = text.replace(/b\{(.*?)\}b/g, "<b>$1</b>");
 
-        // if (word.startsWith("b{")) {
-        //   word.replace(/b{/, "<b>");
-        //   word.replace(/}b/, "</b>");
-        // }
-        // if (word.startsWith("c{")) {
-        //   word.replace(/c{/, "<i>");
-        //   word.replace(/}c/, "</i>");
-        // }
-        // });
-
-        while (text.includes("b{")) {
-          text = text.replace(/b{/, "<b>");
-          text = text.replace(/}b/, "</b>");
-        }
-        while (text.includes("c{")) {
-          text = text.replace(/c{/, "<i>");
-          text = text.replace(/}c/, "</i>");
-        }
+        // Replace occurrences of "c{...}c" with "<i>...</i>"
+        text = text.replace(/c\{(.*?)\}c/g, "<i>$1</i>");
 
         switch (true) {
           case text.startsWith("###"):
@@ -60,8 +40,9 @@ export const Preview = (props: PreviewProps) => {
           case text.startsWith("#"):
             return <h1>{text.replace(/^#/, "")}</h1>;
 
+          //Make sure to validate and sanitize the input appropriately to prevent any security risks.
           default:
-            return <p>{text}</p>;
+            return <p dangerouslySetInnerHTML={{ __html: text }} />;
         }
         // Leta efter occurence av t.ex. "b{}" och ersätt med bold.
       })}
