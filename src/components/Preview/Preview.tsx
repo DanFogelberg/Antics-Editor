@@ -7,7 +7,7 @@ const PreviewContainer = styled.div`
   height: 70vh;
   background-color: whitesmoke;
   border: 1px solid black;
-  white-space: pre;
+  white-space: pre-line;
 `;
 
 type PreviewProps = {
@@ -32,6 +32,7 @@ export const Preview = (props: PreviewProps) => {
           default:
             return <p>{text}</p>;
         }
+        // Leta efter occurence av t.ex. "b{}" och ersätt med bold.
       })}
     </PreviewContainer>
   );
