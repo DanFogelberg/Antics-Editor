@@ -12,7 +12,7 @@ const PreviewContainer = styled.div`
 
 type PreviewProps = {
   text: string;
-}
+};
 
 export const Preview = (props: PreviewProps) => {
   const text: string = props.text;
@@ -29,6 +29,9 @@ export const Preview = (props: PreviewProps) => {
             return <h2>{text.replace(/^##/, "")}</h2>;
           case text.startsWith("#"):
             return <h1>{text.replace(/^#/, "")}</h1>;
+
+          case text.includes("b{}"):
+            return <b>{text.replace(/^b{}/, "")}</b>;
           default:
             return <p>{text}</p>;
         }

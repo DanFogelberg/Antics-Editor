@@ -34,21 +34,33 @@ export const Editor = (props: EditorProps) => {
   const [heading, setHeading] = React.useState("regular");
   const handleHeading = (value: string) => {
     setHeading(value);
+    textAreaRef.current?.focus();
+    handleChange(text);
   };
   const setBold = () => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
+    textAreaRef.current?.focus();
     setText(
       text.slice(0, currentPosition) + "b{}" + text.slice(currentPosition)
     );
   };
 
+  const setCursive = () => {
+    const currentPosition: number | undefined =
+      textAreaRef.current?.selectionStart;
+    textAreaRef.current?.focus();
+    setText(
+      text.slice(0, currentPosition) + "c{}" + text.slice(currentPosition)
+    );
+  };
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const handleChange: Function = (newText: string) => {
     // hitta enter tecknet och lägg in #, ##, ### beroende på heading
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
+    console.log(currentPosition);
     const currentLineIndex: number = newText
       .substring(0, currentPosition)
       .lastIndexOf("\n");
@@ -95,9 +107,8 @@ export const Editor = (props: EditorProps) => {
             <option value="h3">h3</option>
           </select>
         </div>
-        <div className="bold">
-          <button onClick={(e) => setBold()}>B</button>
-        </div>
+        <button onClick={(e) => setBold()}>B</button>
+        <button onClick={(e) => setCursive()}>C</button>
       </EditorInterface>
       <TextArea
         placeholder="# = h1, ## = h2, ### = h3, enter = new line"
