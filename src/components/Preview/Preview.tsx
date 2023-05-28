@@ -21,11 +21,11 @@ export const Preview = (props: PreviewProps) => {
   return (
     <PreviewContainer>
       {textArray.map((text) => {  
-        //Remove all htmltags for safety
+        //Remove all htmltags for safety.
         while(text.includes("<")) text = text.replace("<", "");
         while(text.includes(">")) text = text.replace(">", "");
         
-        // Replace all occurrences of b{..}b and "c{...}c" with "<b>...</b>" and "<i>...</i>"
+        // Replace all occurrences of b{..}b and "c{...}c" with "<b>...</b>" and "<i>...</i>".
         while(text.includes("b{") && text.includes("}b")) text = text.replace(/b\{(.*?)\}b/g, "<b>$1</b>");
         while(text.includes("c{") && text.includes("}c")) text = text.replace(/c\{(.*?)\}c/g, "<i>$1</i>");
 

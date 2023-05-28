@@ -40,18 +40,18 @@ export const Editor = (props: EditorProps) => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
-    const newText =
+    const newText: string =
       text.slice(0, currentPosition) + "b{}b" + text.slice(currentPosition);
-    handleChange(newText, 2);
+    handleChange(newText, 2); //Send new text to handleChange to update states and move cursor inside tags.
   };
 
   const setCursive = () => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
-    const newText =
+    const newText: string =
       text.slice(0, currentPosition) + "c{}c" + text.slice(currentPosition);
-    handleChange(newText, 2);
+    handleChange(newText, 2); //Send new text to handleChange to update states and move cursor inside tags.
   };
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -61,14 +61,11 @@ export const Editor = (props: EditorProps) => {
   ) => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
-    console.log(currentPosition);
     const currentLineIndex: number = newText
       .substring(0, currentPosition)
       .lastIndexOf("\n");
-    console.log(currentLineIndex);
-    console.log(newText[currentLineIndex]);
-
-    let newHeading: string = "";
+   
+    //Remove all #. positionOffset is used to keep track of where to move cursor due to removed characters.
     while (newText.substring(currentLineIndex + 1).startsWith("#")) {
       newText =
         newText.slice(0, currentLineIndex + 1) +
@@ -76,6 +73,7 @@ export const Editor = (props: EditorProps) => {
       positionOffset--;
     }
 
+    let newHeading: string = "";
     switch (heading) {
       case "h1":
         newHeading = "#";
