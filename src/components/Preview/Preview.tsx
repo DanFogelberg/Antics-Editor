@@ -31,13 +31,11 @@ export const Preview = (props: PreviewProps) => {
 
         switch (true) {
           case text.startsWith("###"):
-            return <h3>{text.replace(/^###/, "")}</h3>;
+            return <h3 dangerouslySetInnerHTML={{ __html: text.replace(/^###/, "")}} />;
           case text.startsWith("##"):
-            return <h2>{text.replace(/^##/, "")}</h2>;
+            return <h2 dangerouslySetInnerHTML={{ __html: text.replace(/^##/, "")}} />;
           case text.startsWith("#"):
-            return <h1>{text.replace(/^#/, "")}</h1>;
-
-          //Make sure to validate and sanitize the input appropriately to prevent any security risks.
+            return <h1 dangerouslySetInnerHTML={{ __html: text.replace(/^#/, "")}} />;
           default:
             return <p dangerouslySetInnerHTML={{ __html: text }} />;
         }
