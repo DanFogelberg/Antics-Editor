@@ -39,7 +39,6 @@ export const Preview = (props: PreviewProps) => {
           default:
             return <p dangerouslySetInnerHTML={{ __html: text }} />;
         }
-        // Leta efter occurence av t.ex. "b{}" och ersätt med bold.
       })}
     </PreviewContainer>
   );

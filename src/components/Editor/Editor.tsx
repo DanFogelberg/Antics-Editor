@@ -27,8 +27,6 @@ type EditorProps = {
   setText: Function;
 };
 
-//ta emot setText och typa upp det
-
 let heading: string = "regular";
 
 export const Editor = (props: EditorProps) => {
@@ -128,7 +126,6 @@ export const Editor = (props: EditorProps) => {
       <TextArea
         placeholder="# = h1, ## = h2, ### = h3, enter = new line"
         onChange={(e) => handleChange(e.target.value)}
-        // value={text}
         ref={textAreaRef}
       ></TextArea>
     </EditorContainer>
