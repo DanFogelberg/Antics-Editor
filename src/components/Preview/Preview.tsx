@@ -20,22 +20,36 @@ export const Preview = (props: PreviewProps) => {
   const wordArray: string[] = text.split(" ");
   return (
     <PreviewContainer>
-      {textArray.map((text) => {  
+      {textArray.map((text) => {
         //Remove all htmltags for safety.
-        while(text.includes("<")) text = text.replace("<", "");
-        while(text.includes(">")) text = text.replace(">", "");
-        
+        while (text.includes("<")) text = text.replace("<", "");
+        while (text.includes(">")) text = text.replace(">", "");
+
         // Replace all occurrences of b{..}b and "c{...}c" with "<b>...</b>" and "<i>...</i>".
-        while(text.includes("b{") && text.includes("}b")) text = text.replace(/b\{(.*?)\}b/g, "<b>$1</b>");
-        while(text.includes("c{") && text.includes("}c")) text = text.replace(/c\{(.*?)\}c/g, "<i>$1</i>");
+        while (text.includes("b{") && text.includes("}b"))
+          text = text.replace(/b\{(.*?)\}b/g, "<b>$1</b>");
+        while (text.includes("i{") && text.includes("}i"))
+          text = text.replace(/i\{(.*?)\}i/g, "<i>$1</i>");
 
         switch (true) {
           case text.startsWith("###"):
-            return <h3 dangerouslySetInnerHTML={{ __html: text.replace(/^###/, "")}} />;
+            return (
+              <h3
+                dangerouslySetInnerHTML={{ __html: text.replace(/^###/, "") }}
+              />
+            );
           case text.startsWith("##"):
-            return <h2 dangerouslySetInnerHTML={{ __html: text.replace(/^##/, "")}} />;
+            return (
+              <h2
+                dangerouslySetInnerHTML={{ __html: text.replace(/^##/, "") }}
+              />
+            );
           case text.startsWith("#"):
-            return <h1 dangerouslySetInnerHTML={{ __html: text.replace(/^#/, "")}} />;
+            return (
+              <h1
+                dangerouslySetInnerHTML={{ __html: text.replace(/^#/, "") }}
+              />
+            );
           default:
             return <p dangerouslySetInnerHTML={{ __html: text }} />;
         }
