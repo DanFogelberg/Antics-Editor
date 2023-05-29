@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import styled from "styled-components";
 import { Editor } from "./components/Editor/Editor.tsx";
 import { Preview } from "./components/Preview/Preview.tsx";
@@ -15,9 +15,11 @@ const ContentWrapper = styled.div`
 
 function App() {
   const [text, setText] = useState("");
-  const updateText = (newText: string) => {
+
+  const updateText = useCallback((newText: string) => {
     setText(newText);
-  };
+  }, []);
+
   return (
     <div className="App">
       <ContentWrapper>

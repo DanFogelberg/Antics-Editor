@@ -34,22 +34,25 @@ export const Preview = (props: PreviewProps) => {
             return (
               <h3
                 dangerouslySetInnerHTML={{ __html: text.replace(/^###/, "") }}
+                key={text}
               />
             );
           case text.startsWith("##"):
             return (
               <h2
                 dangerouslySetInnerHTML={{ __html: text.replace(/^##/, "") }}
+                key={text}
               />
             );
           case text.startsWith("#"):
             return (
               <h1
                 dangerouslySetInnerHTML={{ __html: text.replace(/^#/, "") }}
+                key={text}
               />
             );
           default:
-            return <p dangerouslySetInnerHTML={{ __html: text }} />;
+            return <p dangerouslySetInnerHTML={{ __html: text }} key={text} />;
         }
       })}
     </PreviewContainer>
