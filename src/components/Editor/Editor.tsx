@@ -116,6 +116,7 @@ export const Editor = (props: EditorProps) => {
     three: false,
   };
 
+  //prata om det här, att vi typat upp ett event som använder react funktioner
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     console.log(typeof e.key);
     console.log(e.key === "1");
@@ -138,13 +139,15 @@ export const Editor = (props: EditorProps) => {
       handleHeading("h1"); // Set the select value to "h1"
     }
 
-    // if (shortCuts["command"] && shortCuts["alternative"] && shortCuts["two"])
-    //   e.preventDefault(); // Prevent the default browser behavior
-    // handleHeading("h2"); // Set the select value to "h2"
+    if (shortCuts["command"] && shortCuts["two"]) {
+      e.preventDefault(); // Prevent the default browser behavior
+      handleHeading("h2"); // Set the select value to "h2"
+    }
 
-    // if (shortCuts["command"] && shortCuts["alternative"] && shortCuts["three"])
-    //   e.preventDefault(); // Prevent the default browser behavior
-    // handleHeading("h3"); // Set the select value to "h3"
+    if (shortCuts["command"] && shortCuts["three"]) {
+      e.preventDefault(); // Prevent the default browser behavior
+      handleHeading("h3"); // Set the select value to "h3"
+    }
     console.log(shortCuts);
   };
 
@@ -153,10 +156,10 @@ export const Editor = (props: EditorProps) => {
     if (e.metaKey) shortCuts["command"] = false;
     if (e.key === "b") shortCuts["b"] = false;
     if (e.key === "i") shortCuts["i"] = false;
-    // if (e.key === "0") shortCuts["zero"] = false;
+    if (e.key === "0") shortCuts["zero"] = false;
     if (e.key === "1") shortCuts["one"] = false;
-    // if (e.key === "2") shortCuts["two"] = false;
-    // if (e.key === "3") shortCuts["three"] = false;
+    if (e.key === "2") shortCuts["two"] = false;
+    if (e.key === "3") shortCuts["three"] = false;
     // console.log(shortCuts);
   };
 
