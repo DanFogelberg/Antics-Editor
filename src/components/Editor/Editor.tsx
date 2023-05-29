@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React from "react";
-import { type } from "@testing-library/user-event/dist/type";
+// import { type } from "@testing-library/user-event/dist/type";
 
 const EditorContainer = styled.div`
   width: 40vw;
@@ -110,7 +110,6 @@ export const Editor = (props: EditorProps) => {
     command: false,
     b: false,
     i: false,
-    alternative: false,
     zero: false,
     one: false,
     two: false,
@@ -120,7 +119,6 @@ export const Editor = (props: EditorProps) => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     console.log(typeof e.key);
     console.log(e.key === "1");
-    if (e.altKey) shortCuts["alternative"] = true;
     if (e.metaKey) shortCuts["command"] = true;
     if (e.key === "b") shortCuts["b"] = true;
     if (e.key === "i") shortCuts["i"] = true;
@@ -130,13 +128,13 @@ export const Editor = (props: EditorProps) => {
     if (e.key === "3") shortCuts["three"] = true;
     if (shortCuts["command"] && shortCuts["b"]) setBold();
     if (shortCuts["command"] && shortCuts["i"]) setCursive();
-    // if (shortCuts["command"] && shortCuts["alternative"] && shortCuts["zero"])
-    //   e.preventDefault(); // Prevent the default browser behavior
-    // handleHeading("regular"); // Set the select value to "h1"
+    if (shortCuts["command"] && shortCuts["zero"]) {
+      e.preventDefault(); // Prevent the default browser behavior
+      handleHeading("regular"); // Set the select value to "regular"
+    }
 
-    if (shortCuts["command"] && shortCuts["alternative"] && shortCuts["one"]) {
-      // e.preventDefault(); // Prevent the default browser behavior
-      console.log("hej");
+    if (shortCuts["command"] && shortCuts["one"]) {
+      e.preventDefault(); // Prevent the default browser behavior
       handleHeading("h1"); // Set the select value to "h1"
     }
 

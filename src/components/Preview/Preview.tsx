@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import React from "react";
+import styled from "styled-components";
 import "../Preview/Preview.css";
 
 const PreviewContainer = styled.div`
@@ -17,7 +17,6 @@ type PreviewProps = {
 export const Preview = (props: PreviewProps) => {
   const text: string = props.text;
   const textArray: string[] = text.split("\n");
-  const wordArray: string[] = text.split(" ");
   return (
     <PreviewContainer>
       {textArray.map((text) => {
