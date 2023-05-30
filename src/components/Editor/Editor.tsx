@@ -215,58 +215,65 @@ export const Editor = (props: EditorProps) => {
   };
 
   return (
-    <EditorContainer>
-      <EditorInterface>
-        <div className="headings">
-          <select
-            value={heading}
-            onChange={(e) => handleHeading(e.target.value)}
-          >
-            <option value="regular">regular</option>
-            <option value="h1">h1</option>
-            <option value="h2">h2</option>
-            <option value="h3">h3</option>
+    <div>
+      <h1>Editor</h1>
+      <EditorContainer>
+        <EditorInterface>
+          <div className="headings">
+            <select
+              value={heading}
+              onChange={(e) => handleHeading(e.target.value)}
+            >
+              <option value="regular">regular</option>
+              <option value="h1">h1</option>
+              <option value="h2">h2</option>
+              <option value="h3">h3</option>
+            </select>
+          </div>
+          <Button
+            handleClick={() => setBold()}
+            className="boldButton"
+            text="b"
+          />
+
+          <Button
+            handleClick={() => setCursive()}
+            className="italicButton"
+            text="i"
+          />
+
+          <input type="text" placeholder="Title" ref={titleRef}></input>
+          <Button
+            handleClick={async () => {
+              postDocument(titleRef.current?.value, textAreaRef.current?.value);
+              // titles = await supabase.from("documents").select("title, id");
+
+              // fetch datata again here aswell after save
+            }}
+            className="hej"
+            text="Save"
+          />
+          <select onChange={(e) => handleDocumentChange(e)}>
+            <option value="" disabled selected>
+              New document
+            </option>
+            {titles.data?.map((title) => {
+              return (
+                <option value={title.title} id={title.id} key={title.id}>
+                  {title.title}
+                </option>
+              );
+            })}
           </select>
-        </div>
-        <Button handleClick={() => setBold()} className="boldButton" text="b" />
-
-        <Button
-          handleClick={() => setCursive()}
-          className="italicButton"
-          text="i"
-        />
-
-        <input type="text" placeholder="Title" ref={titleRef}></input>
-        <Button
-          handleClick={async () => {
-            postDocument(titleRef.current?.value, textAreaRef.current?.value);
-            // titles = await supabase.from("documents").select("title, id");
-
-            // fetch datata again here aswell after save
-          }}
-          className="hej"
-          text="Save"
-        />
-        <select onChange={(e) => handleDocumentChange(e)}>
-          <option value="" disabled selected>
-            New document
-          </option>
-          {titles.data?.map((title) => {
-            return (
-              <option value={title.title} id={title.id} key={title.id}>
-                {title.title}
-              </option>
-            );
-          })}
-        </select>
-      </EditorInterface>
-      <TextArea
-        placeholder="# = h1, ## = h2, ### = h3, enter = new line, b{...}b = bold, i{...}i = cursive"
-        onChange={(e) => handleChange(e.target.value)}
-        onKeyDown={(e) => handleKeyDown(e)}
-        onKeyUp={(e) => handleKeyUp(e)}
-        ref={textAreaRef}
-      ></TextArea>
-    </EditorContainer>
+        </EditorInterface>
+        <TextArea
+          placeholder="WELCOME TO THE ANTICS-EDITOR.  # = h1, ## = h2, ### = h3, enter = new line, b{...}b = bold, i{...}i = cursive"
+          onChange={(e) => handleChange(e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e)}
+          onKeyUp={(e) => handleKeyUp(e)}
+          ref={textAreaRef}
+        ></TextArea>
+      </EditorContainer>
+    </div>
   );
 };
