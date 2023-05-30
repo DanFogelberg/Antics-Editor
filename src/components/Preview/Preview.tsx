@@ -6,7 +6,8 @@ const PreviewContainer = styled.div`
   height: 70vh;
   background-color: whitesmoke;
   border: 1px solid black;
-  white-space: pre-line;
+  white-space: pre;
+  font-family: "Times New Roman", Times, serif;
 `;
 
 type PreviewProps = {
@@ -18,20 +19,23 @@ export const Preview = (props: PreviewProps) => {
 
   //makes the text into an array of strings, each string is a line of text.
   const textArray: string[] = text.split("\n");
+  console.log(textArray);
 
   //for each line of text, check if it starts with any of the markdown tags. If it does, replace the tag with the corresponding html tag. To be safe while using dangerouslySetInnerHTML we remove all html tags from the text so you cant inject any dangerous code.
   return (
     <PreviewContainer>
       {textArray.map((text) => {
+        console.log(text);
         //Remove all htmltags for safety.
         while (text.includes("<")) text = text.replace("<", "");
         while (text.includes(">")) text = text.replace(">", "");
 
-        // Replace all occurrences of b{..}b and "c{...}c" with "<b>...</b>" and "<i>...</i>".
+        // Replace all occurrences of b{..}b and "i{...}i" with "<b>...</b>" and "<i>...</i>".
         while (text.includes("b{") && text.includes("}b"))
           text = text.replace(/b\{(.*?)\}b/g, "<b>$1</b>");
         while (text.includes("i{") && text.includes("}i"))
           text = text.replace(/i\{(.*?)\}i/g, "<i>$1</i>");
+        // while (text === " ") text = text.replace("\n");
 
         switch (true) {
           case text.startsWith("###"):
