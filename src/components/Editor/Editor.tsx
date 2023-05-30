@@ -250,7 +250,7 @@ export const Editor = (props: EditorProps) => {
 
               // fetch datata again here aswell after save
             }}
-            className="hej"
+            className="saveButton"
             text="Save"
           />
           <select onChange={(e) => handleDocumentChange(e)}>
