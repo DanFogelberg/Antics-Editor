@@ -50,7 +50,6 @@ type EditorProps = {
 let heading: string = "regular";
 
 export const Editor = (props: EditorProps) => {
-  const [text, setText] = React.useState("");
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
   const titleRef = React.useRef<HTMLInputElement>(null);
   const titleSelectRef = React.useRef<HTMLInputElement>(null);
@@ -70,7 +69,7 @@ export const Editor = (props: EditorProps) => {
     if(titleRef.current)titleRef.current.value = data[0].title;
     if(textAreaRef.current)textAreaRef.current.value = data[0].text;
     props.setText(data[0].text);
-    setText(data[0].text);
+
 
   }
 
@@ -78,11 +77,13 @@ export const Editor = (props: EditorProps) => {
   const handleHeading = (newHeading: string) => {
     heading = newHeading;
     textAreaRef.current?.focus();
-    handleChange(text);
+    handleChange(textAreaRef.current?.value);
   };
 
   //function to place or custom boldtags and place the cursor inside them
   const setBold = () => {
+    let text: string = "";
+    if(textAreaRef.current)  text = textAreaRef.current.value;
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
@@ -93,6 +94,8 @@ export const Editor = (props: EditorProps) => {
 
   //function to place or custom cursive tags and place the cursor inside them
   const setCursive = () => {
+    let text: string = "";
+    if(textAreaRef.current)  text = textAreaRef.current.value;
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
@@ -142,7 +145,6 @@ export const Editor = (props: EditorProps) => {
       newHeading +
       newText.slice(currentLineIndex + 1);
     props.setText(newText);
-    setText(newText);
     if (textAreaRef.current) textAreaRef.current.value = newText;
     if (textAreaRef.current && currentPosition)
       textAreaRef.current.setSelectionRange(
@@ -150,7 +152,7 @@ export const Editor = (props: EditorProps) => {
         currentPosition + positionOffset
       );
 
-      console.log(text)
+
   };
 
   //Object to keep track of which keys are pressed.
