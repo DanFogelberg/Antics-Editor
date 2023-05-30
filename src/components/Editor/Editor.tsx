@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import React from "react";
-import { SupabaseClient, createClient } from '@supabase/supabase-js' 
+import { SupabaseClient, createClient } from "@supabase/supabase-js";
 
 // import { type } from "@testing-library/user-event/dist/type";
-
 
 const EditorContainer = styled.div`
   width: 40vw;
@@ -12,18 +11,17 @@ const EditorContainer = styled.div`
   border: 1px solid black;
 `;
 
-
-const supabaseUrl: string =  import.meta.env.VITE_SUPABASE_URL ? import.meta.env.VITE_SUPABASE_URL : "";
-const supabaseKey: string =  import.meta.env.VITE_SUPABASE_KEY ? import.meta.env.VITE_SUPABASE_KEY : "";
-const supabase:SupabaseClient = createClient(supabaseUrl, supabaseKey);
+const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL
+  ? import.meta.env.VITE_SUPABASE_URL
+  : "";
+const supabaseKey: string = import.meta.env.VITE_SUPABASE_KEY
+  ? import.meta.env.VITE_SUPABASE_KEY
+  : "";
+const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
 console.log(supabase.auth);
-
-
 
 console.log(supabase);
 console.log(supabaseUrl);
-
-
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -31,6 +29,8 @@ const TextArea = styled.textarea`
   resize: none;
   padding: 0;
   border: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
 `;
 const EditorInterface = styled.div`
   width: 40vw;
