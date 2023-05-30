@@ -48,11 +48,16 @@ let heading: string = "regular";
 
 export const Editor = (props: EditorProps) => {
   const [text, setText] = React.useState("");
+  const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  //function to handle select change and set heading to the new value. when u change the select value, the cursor is moved to the end of the text. This is why we call handleChange to move the cursor inside the tags.
   const handleHeading = (newHeading: string) => {
     heading = newHeading;
     textAreaRef.current?.focus();
     handleChange(text);
   };
+
+  //function to place or custom boldtags and place the cursor inside them
   const setBold = () => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
@@ -62,6 +67,7 @@ export const Editor = (props: EditorProps) => {
     handleChange(newText, 2); //Send new text to handleChange to update states and move cursor inside tags.
   };
 
+  //function to place or custom cursive tags and place the cursor inside them
   const setCursive = () => {
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
@@ -70,14 +76,15 @@ export const Editor = (props: EditorProps) => {
       text.slice(0, currentPosition) + "i{}i" + text.slice(currentPosition);
     handleChange(newText, 2); //Send new text to handleChange to update states and move cursor inside tags.
   };
-  const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const handleChange: Function = (
     newText: string,
     positionOffset: number = 0
   ) => {
+    //find the index of the cursor.
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
+    //find the index of the last linebreak before the cursor.
     const currentLineIndex: number = newText
       .substring(0, currentPosition)
       .lastIndexOf("\n");
@@ -89,7 +96,7 @@ export const Editor = (props: EditorProps) => {
         newText.slice(currentLineIndex + 2);
       positionOffset--;
     }
-
+    //Depending on which heading you are useing, add the corresponding amount of # and place the cursor after them.
     let newHeading: string = "";
     switch (heading) {
       case "h1":
@@ -121,7 +128,7 @@ export const Editor = (props: EditorProps) => {
       );
   };
 
-  //gör en array med shortcommands, där alla är satta till false, gör sen två funktioner, en som sätter en till true och en som sätter alla till false.
+  //Object to keep track of which keys are pressed.
   const shortCuts: { [key: string]: boolean } = {
     command: false,
     b: false,
@@ -133,9 +140,8 @@ export const Editor = (props: EditorProps) => {
   };
 
   //prata om det här, att vi typat upp ett event som använder react funktioner
+  //function to handle keydown events and set the corresponding key in the shortCuts object to true. If certain combinations of keys are pressed, call the corresponding function.
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    console.log(typeof e.key);
-    console.log(e.key === "1");
     if (e.metaKey) shortCuts["command"] = true;
     if (e.key === "b") shortCuts["b"] = true;
     if (e.key === "i") shortCuts["i"] = true;
@@ -143,8 +149,8 @@ export const Editor = (props: EditorProps) => {
     if (e.key === "1") shortCuts["one"] = true;
     if (e.key === "2") shortCuts["two"] = true;
     if (e.key === "3") shortCuts["three"] = true;
-    if (shortCuts["command"] && shortCuts["b"]) setBold();
-    if (shortCuts["command"] && shortCuts["i"]) setCursive();
+    if (shortCuts["command"] && shortCuts["b"]) setBold(); // If command and b is pressed, call setBold()
+    if (shortCuts["command"] && shortCuts["i"]) setCursive(); // If command and i is pressed, call setCursive()
     if (shortCuts["command"] && shortCuts["zero"]) {
       e.preventDefault(); // Prevent the default browser behavior
       handleHeading("regular"); // Set the select value to "regular"
@@ -164,9 +170,9 @@ export const Editor = (props: EditorProps) => {
       e.preventDefault(); // Prevent the default browser behavior
       handleHeading("h3"); // Set the select value to "h3"
     }
-    console.log(shortCuts);
   };
 
+  //function to handle keyup events and set the corresponding key in the shortCuts object to false reseting the object.
   const handleKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.altKey) shortCuts["alternative"] = false;
     if (e.metaKey) shortCuts["command"] = false;
@@ -176,7 +182,6 @@ export const Editor = (props: EditorProps) => {
     if (e.key === "1") shortCuts["one"] = false;
     if (e.key === "2") shortCuts["two"] = false;
     if (e.key === "3") shortCuts["three"] = false;
-    // console.log(shortCuts);
   };
 
   return (
@@ -193,8 +198,12 @@ export const Editor = (props: EditorProps) => {
             <option value="h3">h3</option>
           </select>
         </div>
-        <button onClick={(e) => setBold()}>B</button>
-        <button onClick={(e) => setCursive()}>C</button>
+        <button onClick={() => setBold()}>
+          <b>B</b>
+        </button>
+        <button onClick={() => setCursive()}>
+          <i>i</i>
+        </button>
       </EditorInterface>
       <TextArea
         placeholder="# = h1, ## = h2, ### = h3, enter = new line, b{...}b = bold, i{...}i = cursive"
