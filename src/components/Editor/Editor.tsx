@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import React from "react";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
+import { Button } from "../Button/Button";
+import "./Editor.css";
 
 // import { type } from "@testing-library/user-event/dist/type";
 
@@ -49,6 +51,7 @@ let heading: string = "regular";
 export const Editor = (props: EditorProps) => {
   const [text, setText] = React.useState("");
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
+  const titleRef = React.useRef<HTMLInputElement>(null);
 
   //function to handle select change and set heading to the new value. when u change the select value, the cursor is moved to the end of the text. This is why we call handleChange to move the cursor inside the tags.
   const handleHeading = (newHeading: string) => {
@@ -197,12 +200,20 @@ export const Editor = (props: EditorProps) => {
             <option value="h3">h3</option>
           </select>
         </div>
-        <button onClick={() => setBold()}>
-          <b>B</b>
-        </button>
-        <button onClick={() => setCursive()}>
-          <i>i</i>
-        </button>
+        <Button handleClick={() => setBold()} className="boldButton" text="b" />
+
+        <Button
+          handleClick={() => setCursive()}
+          className="italicButton"
+          text="i"
+        />
+
+        <input type="text" placeholder="Title" ref={titleRef}></input>
+        <Button
+          handleClick={() => console.log("hej")}
+          className="hej"
+          text="Save"
+        />
       </EditorInterface>
       <TextArea
         placeholder="# = h1, ## = h2, ### = h3, enter = new line, b{...}b = bold, i{...}i = cursive"
