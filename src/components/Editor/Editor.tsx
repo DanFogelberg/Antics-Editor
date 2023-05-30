@@ -23,11 +23,8 @@ const supabase:SupabaseClient = createClient(supabaseUrl, supabaseKey);
 
 
 
-let nej = await supabase.from("documents").select("*");
-
-
-console.log(supabase.auth);
-console.log(nej);
+const titles = await supabase.from("documents").select("title, id");
+console.log(titles);
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -225,6 +222,13 @@ export const Editor = (props: EditorProps) => {
           className="hej"
           text="Save"
         />
+        <select>
+            {titles.data?.map((title) => {
+              return <option value={title.title} key={title.id}>{title.title}</option>
+
+            })}
+          </select>
+
       </EditorInterface>
       <TextArea
         placeholder="# = h1, ## = h2, ### = h3, enter = new line, b{...}b = bold, i{...}i = cursive"
