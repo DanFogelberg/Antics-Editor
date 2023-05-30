@@ -17,10 +17,10 @@ const ContentWrapper = styled.div`
 
 function App() {
   const [text, setText] = useState("");
-
   const updateText = useCallback((newText: string) => {
     setText(newText);
   }, []);
+
 
   return (
     <div className="App">

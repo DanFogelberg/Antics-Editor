@@ -17,6 +17,7 @@ type PreviewProps = {
 
 export const Preview = (props: PreviewProps) => {
   const text: string = props.text;
+  console.log(text);
 
   //makes the text into an array of strings, each string is a line of text.
   const textArray: string[] = text.split("\n");

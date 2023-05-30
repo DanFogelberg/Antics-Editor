@@ -53,12 +53,24 @@ export const Editor = (props: EditorProps) => {
   const [text, setText] = React.useState("");
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
   const titleRef = React.useRef<HTMLInputElement>(null);
+  const titleSelectRef = React.useRef<HTMLInputElement>(null);
 
 
   const postDocument = async (title: string|undefined, text: string|undefined) => {
     if(!title || !text) return;
-    let result = await supabase.from("documents").insert({text: text, title: title});
+    const result = await supabase.from("documents").insert({text: text, title: title});
     console.log(result);
+  }
+
+  const handleDocumentChange = async(e: React.ChangeEvent<HTMLSelectElement>) => {
+    const option =  e.target.selectedOptions[0];
+    const { data, error } = await supabase.from("documents").select("*").eq("id", option.id);
+    console.log(data[0].text); //Add type to remove error.
+    
+    if(titleRef.current)titleRef.current.value = data[0].title;
+    if(textAreaRef.current)textAreaRef.current.value = data[0].text;
+    props.setText(data[0].text);
+
   }
 
   //function to handle select change and set heading to the new value. when u change the select value, the cursor is moved to the end of the text. This is why we call handleChange to move the cursor inside the tags.
@@ -136,6 +148,8 @@ export const Editor = (props: EditorProps) => {
         currentPosition + positionOffset,
         currentPosition + positionOffset
       );
+
+      console.log(text)
   };
 
   //Object to keep track of which keys are pressed.
@@ -222,9 +236,9 @@ export const Editor = (props: EditorProps) => {
           className="hej"
           text="Save"
         />
-        <select>
+        <select onChange={(e) => handleDocumentChange(e)}>
             {titles.data?.map((title) => {
-              return <option value={title.title} key={title.id}>{title.title}</option>
+              return <option value={title.title} id = {title.id} key={title.id}>{title.title}</option>
 
             })}
           </select>
