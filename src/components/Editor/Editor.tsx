@@ -13,17 +13,29 @@ const EditorContainer = styled.div`
   border: 1px solid black;
 `;
 
-const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL
-  ? import.meta.env.VITE_SUPABASE_URL
-  : "";
-const supabaseKey: string = import.meta.env.VITE_SUPABASE_KEY
-  ? import.meta.env.VITE_SUPABASE_KEY
-  : "";
-const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
-console.log(supabase.auth);
 
-console.log(supabase);
-console.log(supabaseUrl);
+const supabaseUrl: string =  import.meta.env.VITE_SUPABASE_URL ? import.meta.env.VITE_SUPABASE_URL : "";
+const supabaseKey: string =  import.meta.env.VITE_SUPABASE_KEY ? import.meta.env.VITE_SUPABASE_KEY : "";
+const supabase:SupabaseClient = createClient(supabaseUrl, supabaseKey);
+
+
+
+// let { data, error } = await supabase
+//   .from('documents')
+//   .select('id');
+
+// console.log(data);
+// console.log(error);
+
+
+let hej = await supabase.from("documents").insert({text: "Hej", title: "Ocka hej"});
+console.log(hej);
+
+let nej = await supabase.from("documents").select("*");
+
+
+console.log(supabase.auth);
+console.log(nej);
 
 const TextArea = styled.textarea`
   width: 100%;
