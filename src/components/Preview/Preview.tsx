@@ -24,7 +24,7 @@ export const Preview = (props: PreviewProps) => {
   //for each line of text, check if it starts with any of the markdown tags. If it does, replace the tag with the corresponding html tag. To be safe while using dangerouslySetInnerHTML we remove all html tags from the text so you cant inject any dangerous code.
   return (
     <PreviewContainer>
-      {textArray.map((text) => {
+      {textArray.map((text, id) => {
         console.log(text);
         //Remove all htmltags for safety.
         while (text.includes("<")) text = text.replace("<", "");
@@ -42,25 +42,25 @@ export const Preview = (props: PreviewProps) => {
             return (
               <h3
                 dangerouslySetInnerHTML={{ __html: text.replace(/^###/, "") }}
-                key={text}
+                key={id}
               />
             );
           case text.startsWith("##"):
             return (
               <h2
                 dangerouslySetInnerHTML={{ __html: text.replace(/^##/, "") }}
-                key={text}
+                key={id}
               />
             );
           case text.startsWith("#"):
             return (
               <h1
                 dangerouslySetInnerHTML={{ __html: text.replace(/^#/, "") }}
-                key={text}
+                key={id}
               />
             );
           default:
-            return <p dangerouslySetInnerHTML={{ __html: text }} key={text} />;
+            return <p dangerouslySetInnerHTML={{ __html: text }} key={id} />;
         }
       })}
     </PreviewContainer>
