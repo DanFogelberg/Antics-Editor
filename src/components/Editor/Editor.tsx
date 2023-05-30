@@ -118,7 +118,6 @@ export const Editor = (props: EditorProps) => {
       newHeading +
       newText.slice(currentLineIndex + 1);
     props.setText(newText);
-    console.log(newText);
     setText(newText);
     if (textAreaRef.current) textAreaRef.current.value = newText;
     if (textAreaRef.current && currentPosition)

@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import "../Preview/Preview.css";
+import "./Preview.css";
 
 const PreviewContainer = styled.div`
   width: 40vw;
   height: 70vh;
   background-color: whitesmoke;
   border: 1px solid black;
-  white-space: pre;
+  white-space: break-spaces;
   font-family: "Times New Roman", Times, serif;
+  word-break: break-all;
 `;
 
 type PreviewProps = {
@@ -19,13 +20,11 @@ export const Preview = (props: PreviewProps) => {
 
   //makes the text into an array of strings, each string is a line of text.
   const textArray: string[] = text.split("\n");
-  console.log(textArray);
 
   //for each line of text, check if it starts with any of the markdown tags. If it does, replace the tag with the corresponding html tag. To be safe while using dangerouslySetInnerHTML we remove all html tags from the text so you cant inject any dangerous code.
   return (
     <PreviewContainer>
       {textArray.map((text, id) => {
-        console.log(text);
         //Remove all htmltags for safety.
         while (text.includes("<")) text = text.replace("<", "");
         while (text.includes(">")) text = text.replace(">", "");
