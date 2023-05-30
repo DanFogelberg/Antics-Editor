@@ -70,6 +70,7 @@ export const Editor = (props: EditorProps) => {
     if(titleRef.current)titleRef.current.value = data[0].title;
     if(textAreaRef.current)textAreaRef.current.value = data[0].text;
     props.setText(data[0].text);
+    setText(data[0].text);
 
   }
 
