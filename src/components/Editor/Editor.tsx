@@ -20,16 +20,8 @@ const supabase:SupabaseClient = createClient(supabaseUrl, supabaseKey);
 
 
 
-// let { data, error } = await supabase
-//   .from('documents')
-//   .select('id');
-
-// console.log(data);
-// console.log(error);
 
 
-let hej = await supabase.from("documents").insert({text: "Hej", title: "Ocka hej"});
-console.log(hej);
 
 let nej = await supabase.from("documents").select("*");
 
@@ -64,6 +56,13 @@ export const Editor = (props: EditorProps) => {
   const [text, setText] = React.useState("");
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
   const titleRef = React.useRef<HTMLInputElement>(null);
+
+
+  const postDocument = async (title: string|undefined, text: string|undefined) => {
+    if(!title || !text) return;
+    let result = await supabase.from("documents").insert({text: text, title: title});
+    console.log(result);
+  }
 
   //function to handle select change and set heading to the new value. when u change the select value, the cursor is moved to the end of the text. This is why we call handleChange to move the cursor inside the tags.
   const handleHeading = (newHeading: string) => {
@@ -222,7 +221,7 @@ export const Editor = (props: EditorProps) => {
 
         <input type="text" placeholder="Title" ref={titleRef}></input>
         <Button
-          handleClick={() => console.log("hej")}
+          handleClick={() => postDocument(titleRef.current?.value, textAreaRef.current?.value)}
           className="hej"
           text="Save"
         />
