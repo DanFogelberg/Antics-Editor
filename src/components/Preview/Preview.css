@@ -4,4 +4,9 @@ h3,
 p {
   padding: 0;
   margin: 0;
+  word-break: break-all;
+}
+
+p {
+  min-height: 16px;
 }

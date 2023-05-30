@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import React from "react";
-import { SupabaseClient, createClient } from '@supabase/supabase-js' 
+import { SupabaseClient, createClient } from "@supabase/supabase-js";
 
 // import { type } from "@testing-library/user-event/dist/type";
-
 
 const EditorContainer = styled.div`
   width: 40vw;
@@ -36,14 +35,14 @@ let nej = await supabase.from("documents").select("*");
 console.log(supabase.auth);
 console.log(nej);
 
-
-
 const TextArea = styled.textarea`
   width: 100%;
   height: 68vh;
   resize: none;
   padding: 0;
   border: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
 `;
 const EditorInterface = styled.div`
   width: 40vw;
@@ -131,7 +130,6 @@ export const Editor = (props: EditorProps) => {
       newHeading +
       newText.slice(currentLineIndex + 1);
     props.setText(newText);
-    console.log(newText);
     setText(newText);
     if (textAreaRef.current) textAreaRef.current.value = newText;
     if (textAreaRef.current && currentPosition)
