@@ -13,3 +13,9 @@ A text editor demo created by [Simon Lövbacka](https://github.com/lovbackan) & 
 1. Should this be a markdown language where we make something a heading by writing "#" or should we create an interface for the editor so that you select a textpart and press the heading button? Word vs Notion?
 
 2. How should be save this to a database, how should we convert the data from the database into a heading?
+
+## Backlog
+
+1. Create command for ⌘ + z
+
+2. Fix design!
