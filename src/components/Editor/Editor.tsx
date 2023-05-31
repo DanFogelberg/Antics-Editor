@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Button } from "../Button/Button";
 import "./Editor.css";
-// import { type } from "@testing-library/user-event/dist/type";
 
 const EditorContainer = styled.div`
   width: 40vw;
@@ -11,9 +10,6 @@ const EditorContainer = styled.div`
   background-color: whitesmoke;
   border: 1px solid black;
 `;
-
-
-
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -37,15 +33,15 @@ type EditorProps = {
 };
 
 type document = {
-  id: number,
-  text: string,
-  title: string,
-  created_at: string
+  id: number;
+  text: string;
+  title: string;
+  created_at: string;
 };
 
 type titleObject = {
-  id: number,
-  title: string
+  id: number;
+  title: string;
 };
 
 const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL
@@ -56,38 +52,35 @@ const supabaseKey: string = import.meta.env.VITE_SUPABASE_KEY
   : "";
 const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
 
-
 let heading: string = "regular";
 let emptyTitles: titleObject[] = [];
 
 export const Editor = (props: EditorProps) => {
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
   const titleRef = React.useRef<HTMLInputElement>(null);
-  const [titles, setTitles]: [titles:titleObject[], setTitles: React.Dispatch<React.SetStateAction<titleObject[]>>] = useState(emptyTitles) //**För att typa titles måste vi type setTitles
-
-
-  const [test, setTest] = useState("HEJ")
-  
+  const [titles, setTitles]: [
+    titles: titleObject[],
+    setTitles: React.Dispatch<React.SetStateAction<titleObject[]>>
+  ] = useState(emptyTitles); //**För att typa titles måste vi type setTitles
 
   useEffect(() => {
-    fetchTitles()
-    .then((result) => setTitles(result));
+    fetchTitles().then((result) => setTitles(result));
   }, []);
 
-  const fetchTitles = async():Promise<titleObject[]> => {
+  const fetchTitles = async (): Promise<titleObject[]> => {
     const response = await supabase.from("documents").select("title, id");
-    let titles:titleObject[] = [];
-    if(!response.data) return [];
+    let titles: titleObject[] = [];
+    if (!response.data) return [];
     response.data.forEach((fetchedTitle) => {
-      const titleObject:titleObject = {id: 0, title: ""};
-      if(typeof fetchedTitle.id === "number") titleObject.id = fetchedTitle.id;
-      if(typeof fetchedTitle.title === "string") titleObject.title = fetchedTitle.title;
+      const titleObject: titleObject = { id: 0, title: "" };
+      if (typeof fetchedTitle.id === "number") titleObject.id = fetchedTitle.id;
+      if (typeof fetchedTitle.title === "string")
+        titleObject.title = fetchedTitle.title;
       titles.push(titleObject);
-    })
-
+    });
 
     return titles;
-  }
+  };
 
   const postDocument = async (
     title: string | undefined,
@@ -100,7 +93,6 @@ export const Editor = (props: EditorProps) => {
     console.log(result);
   };
 
-  
   const handleDocumentChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -110,38 +102,37 @@ export const Editor = (props: EditorProps) => {
       .select("*")
       .eq("id", option.id);
 
-    if(!response.data) return;
+    if (!response.data) return;
 
-    const document:document = fetchDataToDocument(response.data[0]);
-    
-  
+    const document: document = fetchDataToDocument(response.data[0]);
 
     if (titleRef.current) titleRef.current.value = document.title;
     if (textAreaRef.current) textAreaRef.current.value = document.text;
     props.setText(document.text);
   };
 
-  const fetchDataToDocument = (fetchData:{[x: string]: any }) :document => {
+  const fetchDataToDocument = (fetchData: { [x: string]: any }): document => {
     let id: number = 0;
     let text: string = "";
     let title: string = "";
     let created_at: string = "";
 
-    if(fetchData.id && typeof fetchData.id === typeof "number") id = fetchData.id;
-    if(typeof fetchData.text === typeof "string") text = fetchData.text;
-    if(typeof fetchData.title === typeof "title") title = fetchData.title;
-    if(typeof fetchData.created_at === typeof "string") created_at = fetchData.created_at;
+    if (fetchData.id && typeof fetchData.id === typeof "number")
+      id = fetchData.id;
+    if (typeof fetchData.text === typeof "string") text = fetchData.text;
+    if (typeof fetchData.title === typeof "title") title = fetchData.title;
+    if (typeof fetchData.created_at === typeof "string")
+      created_at = fetchData.created_at;
 
-    const document:document = {
+    const document: document = {
       id: id,
       text: text,
       title: title,
-      created_at: created_at
-    }
+      created_at: created_at,
+    };
 
     return document;
-  }
-
+  };
 
   //function to handle select change and set heading to the new value. when u change the select value, the cursor is moved to the end of the text. This is why we call handleChange to move the cursor inside the tags.
   const handleHeading = (newHeading: string) => {
@@ -282,8 +273,10 @@ export const Editor = (props: EditorProps) => {
   };
 
   //Updates heading to the heading of the line when you switch lines.
-  const handleSelectionChange = (e: React.SyntheticEvent<HTMLTextAreaElement, Event>) => {
-    const textArea: EventTarget= e.currentTarget;  
+  const handleSelectionChange = (
+    e: React.SyntheticEvent<HTMLTextAreaElement, Event>
+  ) => {
+    const textArea: EventTarget & HTMLTextAreaElement = e.currentTarget;
 
     console.log(textArea.selectionStart); //Type textarea better!
 
@@ -293,11 +286,13 @@ export const Editor = (props: EditorProps) => {
     const currentLineIndex: number =
       1 + textArea.value.substring(0, currentPosition).lastIndexOf("\n");
 
-
-    if(textArea.value.substring(currentLineIndex).startsWith("###") ) heading = "h3";
-    else if(textArea.value.substring(currentLineIndex).startsWith("##") ) heading = "h2";
-    else if(textArea.value.substring(currentLineIndex).startsWith("#") ) heading = "h1";
-  }
+    if (textArea.value.substring(currentLineIndex).startsWith("###"))
+      heading = "h3";
+    else if (textArea.value.substring(currentLineIndex).startsWith("##"))
+      heading = "h2";
+    else if (textArea.value.substring(currentLineIndex).startsWith("#"))
+      heading = "h1";
+  };
 
   return (
     <div>
@@ -331,6 +326,7 @@ export const Editor = (props: EditorProps) => {
           <Button
             handleClick={async () => {
               postDocument(titleRef.current?.value, textAreaRef.current?.value);
+              fetchTitles().then((result) => setTitles(result));
             }}
             className="saveButton"
             text="Save"
@@ -344,7 +340,11 @@ export const Editor = (props: EditorProps) => {
             </option>
             {titles.map((title) => {
               return (
-                <option value={title.title} id={title.id.toString()} key={title.id}>
+                <option
+                  value={title.title}
+                  id={title.id.toString()}
+                  key={title.id}
+                >
                   {title.title}
                 </option>
               );
