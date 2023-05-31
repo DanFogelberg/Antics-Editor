@@ -13,15 +13,13 @@ const EditorContainer = styled.div`
   border: 1px solid black;
 `;
 
-
-const supabaseUrl: string =  import.meta.env.VITE_SUPABASE_URL ? import.meta.env.VITE_SUPABASE_URL : "";
-const supabaseKey: string =  import.meta.env.VITE_SUPABASE_KEY ? import.meta.env.VITE_SUPABASE_KEY : "";
-const supabase:SupabaseClient = createClient(supabaseUrl, supabaseKey);
-
-
-
-
-
+const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL
+  ? import.meta.env.VITE_SUPABASE_URL
+  : "";
+const supabaseKey: string = import.meta.env.VITE_SUPABASE_KEY
+  ? import.meta.env.VITE_SUPABASE_KEY
+  : "";
+const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
 
 const titles = await supabase.from("documents").select("title, id");
 console.log(titles);
@@ -54,24 +52,31 @@ export const Editor = (props: EditorProps) => {
   const titleRef = React.useRef<HTMLInputElement>(null);
   const titleSelectRef = React.useRef<HTMLInputElement>(null);
 
-
-  const postDocument = async (title: string|undefined, text: string|undefined) => {
-    if(!title || !text) return;
-    const result = await supabase.from("documents").insert({text: text, title: title});
+  const postDocument = async (
+    title: string | undefined,
+    text: string | undefined
+  ) => {
+    if (!title || !text) return;
+    const result = await supabase
+      .from("documents")
+      .insert({ text: text, title: title });
     console.log(result);
-  }
+  };
 
-  const handleDocumentChange = async(e: React.ChangeEvent<HTMLSelectElement>) => {
-    const option =  e.target.selectedOptions[0];
-    const { data, error } = await supabase.from("documents").select("*").eq("id", option.id);
+  const handleDocumentChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const option = e.target.selectedOptions[0];
+    const { data, error } = await supabase
+      .from("documents")
+      .select("*")
+      .eq("id", option.id);
     console.log(data[0].text); //Add type to remove error.
-    
-    if(titleRef.current)titleRef.current.value = data[0].title;
-    if(textAreaRef.current)textAreaRef.current.value = data[0].text;
+
+    if (titleRef.current) titleRef.current.value = data[0].title;
+    if (textAreaRef.current) textAreaRef.current.value = data[0].text;
     props.setText(data[0].text);
-
-
-  }
+  };
 
   //function to handle select change and set heading to the new value. when u change the select value, the cursor is moved to the end of the text. This is why we call handleChange to move the cursor inside the tags.
   const handleHeading = (newHeading: string) => {
@@ -83,7 +88,7 @@ export const Editor = (props: EditorProps) => {
   //function to place or custom boldtags and place the cursor inside them
   const setBold = () => {
     let text: string = "";
-    if(textAreaRef.current)  text = textAreaRef.current.value;
+    if (textAreaRef.current) text = textAreaRef.current.value;
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
@@ -95,7 +100,7 @@ export const Editor = (props: EditorProps) => {
   //function to place or custom cursive tags and place the cursor inside them
   const setCursive = () => {
     let text: string = "";
-    if(textAreaRef.current)  text = textAreaRef.current.value;
+    if (textAreaRef.current) text = textAreaRef.current.value;
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
     textAreaRef.current?.focus();
@@ -151,8 +156,6 @@ export const Editor = (props: EditorProps) => {
         currentPosition + positionOffset,
         currentPosition + positionOffset
       );
-
-
   };
 
   //Object to keep track of which keys are pressed.
@@ -231,49 +234,66 @@ export const Editor = (props: EditorProps) => {
   }
 
   return (
-    <EditorContainer>
-      <EditorInterface>
-        <div className="headings">
-          <select
-            value={heading}
-            onChange={(e) => handleHeading(e.target.value)}
-          >
-            <option value="regular">regular</option>
-            <option value="h1">h1</option>
-            <option value="h2">h2</option>
-            <option value="h3">h3</option>
-          </select>
-        </div>
-        <Button handleClick={() => setBold()} className="boldButton" text="b" />
+    <div>
+      <h1>Editor</h1>
+      <EditorContainer>
+        <EditorInterface>
+          <div className="headings">
+            <select
+              value={heading}
+              onChange={(e) => handleHeading(e.target.value)}
+            >
+              <option value="regular">regular</option>
+              <option value="h1">h1</option>
+              <option value="h2">h2</option>
+              <option value="h3">h3</option>
+            </select>
+          </div>
+          <Button
+            handleClick={() => setBold()}
+            className="boldButton"
+            text="b"
+          />
 
-        <Button
-          handleClick={() => setCursive()}
-          className="italicButton"
-          text="i"
-        />
+          <Button
+            handleClick={() => setCursive()}
+            className="italicButton"
+            text="i"
+          />
 
-        <input type="text" placeholder="Title" ref={titleRef}></input>
-        <Button
-          handleClick={() => postDocument(titleRef.current?.value, textAreaRef.current?.value)}
-          className="hej"
-          text="Save"
-        />
-        <select onChange={(e) => handleDocumentChange(e)}>
+          <input type="text" placeholder="Title" ref={titleRef}></input>
+          <Button
+            handleClick={async () => {
+              postDocument(titleRef.current?.value, textAreaRef.current?.value);
+              // titles = await supabase.from("documents").select("title, id");
+
+              // fetch datata again here aswell after save
+            }}
+            className="saveButton"
+            text="Save"
+          />
+          <select onChange={(e) => handleDocumentChange(e)}>
+            <option value="" disabled selected>
+              New document
+            </option>
             {titles.data?.map((title) => {
-              return <option value={title.title} id = {title.id} key={title.id}>{title.title}</option>
-
+              return (
+                <option value={title.title} id={title.id} key={title.id}>
+                  {title.title}
+                </option>
+              );
             })}
           </select>
-
-      </EditorInterface>
-      <TextArea
-        placeholder="# = h1, ## = h2, ### = h3, enter = new line, b{...}b = bold, i{...}i = cursive"
-        onChange={(e) => handleChange(e.target.value)}
-        onKeyDown={(e) => handleKeyDown(e)}
-        onKeyUp={(e) => handleKeyUp(e)}
-        onSelect={(e) => handleSelectionChange(e)}
-        ref={textAreaRef}
-      ></TextArea>
-    </EditorContainer>
+        </EditorInterface>
+        <TextArea
+          placeholder="WELCOME TO THE ANTICS-EDITOR.  # = h1, ## = h2, ### = h3, enter = new line, b{...}b = bold, i{...}i = cursive"
+          onChange={(e) => handleChange(e.target.value)}
+          onKeyDown={(e) => handleKeyDown(e)}
+          onKeyUp={(e) => handleKeyUp(e)}
+          onSelect={(e) => handleSelectionChange(e)}
+          ref={textAreaRef}
+        ></TextArea>
+      </EditorContainer>
+    </div>
   );
 };
