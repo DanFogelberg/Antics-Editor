@@ -21,13 +21,19 @@ function App() {
     setText(newText);
   }, []);
 
-
   return (
     <div className="App">
+      <div className="topLine"></div>
+      <div className="leftLine"></div>
+      <div className="middleLine"></div>
+      <div className="rightLine"></div>
+
       <ContentWrapper>
         <Editor setText={updateText} />
         <Preview text={text} />
       </ContentWrapper>
+      <div className="bottomLine"></div>
+      <div className="commandsLine"></div>
       <Commands />
     </div>
   );

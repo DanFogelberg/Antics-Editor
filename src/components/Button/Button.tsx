@@ -1,5 +1,5 @@
 type ButtonProps = {
-  handleClick: Function;
+  handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className: string;
   text: string;
 };

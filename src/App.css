@@ -1,3 +1,54 @@
 body {
   background: #0d1117;
+  margin: 0;
+}
+.topLine {
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  position: absolute;
+  margin-top: 2.2rem;
+}
+
+.bottomLine {
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  position: absolute;
+}
+
+.leftLine {
+  width: 2px;
+  height: 96vh;
+  margin-top: 2.2rem;
+  background-color: white;
+  position: absolute;
+  margin-left: 6.5vw;
+}
+
+.middleLine {
+  width: 2px;
+  height: 93.4vh;
+  margin-top: 2.2rem;
+  background-color: white;
+  position: absolute;
+  margin-left: 46.7vw;
+}
+
+.rightLine {
+  width: 2px;
+  height: 76.42vh;
+  margin-top: 2.2rem;
+  background-color: white;
+  position: absolute;
+  margin-left: 53.2vw;
+}
+
+.commandsLine {
+  width: 6.53vw;
+  height: 2px;
+  background-color: white;
+  position: absolute;
+  margin-top: 5.8vh;
+  margin-left: 46.8vw;
 }

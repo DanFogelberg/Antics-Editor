@@ -7,23 +7,27 @@ import "./Editor.css";
 const EditorContainer = styled.div`
   width: 40vw;
   height: 70vh;
-  background-color: whitesmoke;
+
   border: 1px solid black;
+  border-left: 2px solid white;
+  border-right: 2px solid white;
 `;
 
 const TextArea = styled.textarea`
   width: 100%;
-  height: 68vh;
+  height: calc(70vh - 1.5rem);
   resize: none;
   padding: 0;
   border: 0;
   font-family: "Times New Roman", Times, serif;
   font-size: 16px;
+  background-color: #161b22;
+  color: white;
 `;
 const EditorInterface = styled.div`
-  width: 40vw;
-  height: 2vh;
-  background-color: grey;
+  width: 100%;
+  height: 1.5rem;
+  background-color: whitesmoke;
   display: flex;
   flex-direction: row;
 `;
@@ -297,6 +301,7 @@ export const Editor = (props: EditorProps) => {
   return (
     <div>
       <h1 className="title">Editor</h1>
+
       <EditorContainer>
         <EditorInterface>
           <div className="headings">
