@@ -1,0 +1,9 @@
+1. Create command for ⌘ + z
+
+2. Create delete button and interface
+
+3. Create update button and interface
+
+4. fix design 
+
+

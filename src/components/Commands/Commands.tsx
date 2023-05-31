@@ -4,7 +4,7 @@ import "./Commands.css";
 const CommandContainer = styled.div`
   height: 10rem;
   width: 15rem;
-  background-color: whitesmoke;
+  background-color: white;
   border: 1px solid black;
   display: flex;
   justify-content: center;
