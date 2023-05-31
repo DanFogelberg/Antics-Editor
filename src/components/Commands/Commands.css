@@ -6,3 +6,7 @@ ul {
 .commandHeading {
   font-family: "Roboto", sans-serif;
 }
+
+li {
+  margin-bottom: 0.2rem;
+}

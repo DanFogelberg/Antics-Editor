@@ -1,11 +1,9 @@
 .italicButton {
   font-style: italic;
-  cursor: pointer;
 }
 
 .boldButton {
   font-weight: bold;
-  cursor: pointer;
 }
 
 .title {
@@ -15,4 +13,10 @@
 
 select {
   height: 100%;
+}
+
+button {
+  background-color: #42536c;
+  color: white;
+  cursor: pointer;
 }

@@ -18,6 +18,7 @@ const CommandContainer = styled.div`
   border-bottom: 2px solid white;
   border-right: 2px solid white;
   border-top: 2px solid white;
+  gap: 5px;
 `;
 
 export const Commands = () => {

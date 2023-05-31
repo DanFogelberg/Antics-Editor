@@ -27,7 +27,7 @@ const TextArea = styled.textarea`
 const EditorInterface = styled.div`
   width: 100%;
   height: 1.5rem;
-  background-color: whitesmoke;
+  background-color: #2c3748;
   display: flex;
   flex-direction: row;
 `;
@@ -300,7 +300,7 @@ export const Editor = (props: EditorProps) => {
 
   return (
     <div>
-      <h1 className="title">Editor</h1>
+      <h1 className="title">Antics Editor</h1>
 
       <EditorContainer>
         <EditorInterface>
