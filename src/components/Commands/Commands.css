@@ -10,3 +10,21 @@ ul {
 li {
   margin-bottom: 0.2rem;
 }
+
+.invisibleBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.rightBox {
+  width: 40vw;
+  height: 100%;
+}
+
+.leftBox {
+  width: 40vw;
+  height: 100%;
+}

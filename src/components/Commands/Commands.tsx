@@ -12,7 +12,8 @@ const CommandContainer = styled.div`
   align-items: center;
   flex-direction: column;
   font-family: "Roboto", sans-serif;
-  margin-left: 32.3vw;
+  display: flex;
+  margin-left: auto;
   margin-top: 5.8vh;
   border-left: 2px solid white;
   border-bottom: 2px solid white;
@@ -23,15 +24,20 @@ const CommandContainer = styled.div`
 
 export const Commands = () => {
   return (
-    <CommandContainer>
-      <h2 className="commandHeading">Commands</h2>
-      <ul>
-        <li>Heading 1 = ⌘ + 1</li>
-        <li>Heading 2 = ⌘ + 2</li>
-        <li>Heading 3 = ⌘ + 3</li>
-        <li>Bold = ⌘ + b</li>
-        <li>Italic = ⌘ + i</li>
-      </ul>
-    </CommandContainer>
+    <div className="invisibleBox">
+      <div className="leftBox">
+        <CommandContainer>
+          <h2 className="commandHeading">Commands</h2>
+          <ul>
+            <li>Heading 1 = ⌘ + 1</li>
+            <li>Heading 2 = ⌘ + 2</li>
+            <li>Heading 3 = ⌘ + 3</li>
+            <li>Bold = ⌘ + b</li>
+            <li>Italic = ⌘ + i</li>
+          </ul>
+        </CommandContainer>
+      </div>
+      <div className="rightBox"> </div>
+    </div>
   );
 };

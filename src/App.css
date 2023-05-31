@@ -19,7 +19,7 @@ body {
 
 .leftLine {
   width: 2px;
-  height: 96vh;
+  height: calc(100vh - 2.2rem);
   margin-top: 2.2rem;
   background-color: white;
   position: absolute;
@@ -28,16 +28,16 @@ body {
 
 .middleLine {
   width: 2px;
-  height: 93.4vh;
+  height: 76.2vh;
   margin-top: 2.2rem;
   background-color: white;
   position: absolute;
-  margin-left: 46.7vw;
+  margin-left: 46.55vw;
 }
 
 .rightLine {
   width: 2px;
-  height: 76.42vh;
+  height: 76.2vh;
   margin-top: 2.2rem;
   background-color: white;
   position: absolute;
@@ -45,10 +45,10 @@ body {
 }
 
 .commandsLine {
-  width: 6.53vw;
+  width: 6.68vw;
   height: 2px;
   background-color: white;
   position: absolute;
   margin-top: 5.8vh;
-  margin-left: 46.8vw;
+  margin-left: 46.65vw;
 }

@@ -5,11 +5,9 @@ const PreviewContainer = styled.div`
   width: 40vw;
   height: 70vh;
   background-color: #161b22;
-  border: 1px solid black;
   white-space: break-spaces;
   font-family: "Times New Roman", Times, serif;
   word-break: break-all;
-  border-left: 2px solid white;
   border-right: 2px solid white;
   color: white;
 `;
