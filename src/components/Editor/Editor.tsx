@@ -3,7 +3,6 @@ import React from "react";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Button } from "../Button/Button";
 import "./Editor.css";
-
 // import { type } from "@testing-library/user-event/dist/type";
 
 const EditorContainer = styled.div`
@@ -66,7 +65,7 @@ export const Editor = (props: EditorProps) => {
   const handleDocumentChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const option = e.target.selectedOptions[0];
+    const option: HTMLOptionElement = e.target.selectedOptions[0];
     const { data, error } = await supabase
       .from("documents")
       .select("*")
@@ -159,6 +158,7 @@ export const Editor = (props: EditorProps) => {
   };
 
   //Object to keep track of which keys are pressed.
+  //****Kan prata om denna funktionen lite mer, att vi typat upp den och att vi använder en object istället för att ha flera olika states.
   const shortCuts: { [key: string]: boolean } = {
     command: false,
     b: false,
@@ -169,13 +169,14 @@ export const Editor = (props: EditorProps) => {
     three: false,
   };
 
-  //prata om det här, att vi typat upp ett event som använder react funktioner
   //function to handle keydown events and set the corresponding key in the shortCuts object to true. If certain combinations of keys are pressed, call the corresponding function.
+
+  //***VISA DETTA EXEMPLET, om vi tar bort type React.KeyboardEvent<HTMLTextAreaElement> så får vi inte tillgång till e.key
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.metaKey) shortCuts["command"] = true;
     if (e.key === "b") shortCuts["b"] = true;
     if (e.key === "i") shortCuts["i"] = true;
-    if (e.key == "0") shortCuts["zero"] = true;
+    if (e.key === "0") shortCuts["zero"] = true;
     if (e.key === "1") shortCuts["one"] = true;
     if (e.key === "2") shortCuts["two"] = true;
     if (e.key === "3") shortCuts["three"] = true;
@@ -214,24 +215,26 @@ export const Editor = (props: EditorProps) => {
     if (e.key === "3") shortCuts["three"] = false;
   };
 
-  const handleSelectionChange = (e: React.SyntheticEvent<HTMLTextAreaElement, Event>) => {
-    const textArea: EventTarget= e.currentTarget;  
+  const handleSelectionChange = (
+    e: React.SyntheticEvent<HTMLTextAreaElement, Event>
+  ) => {
+    const textArea: EventTarget = e.currentTarget;
 
     console.log(textArea.selectionStart); //Type textarea better!
 
     //find the index of the cursor.
     const currentPosition: number | undefined = textArea.selectionStart;
     //find the index of the last linebreak before the cursor.
-    const currentLineIndex: number = 1 + textArea.value
-    .substring(0, currentPosition)
-    .lastIndexOf("\n");
+    const currentLineIndex: number =
+      1 + textArea.value.substring(0, currentPosition).lastIndexOf("\n");
 
-
-    if(textArea.value.substring(currentLineIndex).startsWith("###") ) heading = "h3";
-    else if(textArea.value.substring(currentLineIndex).startsWith("##") ) heading = "h2";
-    else if(textArea.value.substring(currentLineIndex).startsWith("#") ) heading = "h1";
-
-  }
+    if (textArea.value.substring(currentLineIndex).startsWith("###"))
+      heading = "h3";
+    else if (textArea.value.substring(currentLineIndex).startsWith("##"))
+      heading = "h2";
+    else if (textArea.value.substring(currentLineIndex).startsWith("#"))
+      heading = "h1";
+  };
 
   return (
     <div>
@@ -265,15 +268,15 @@ export const Editor = (props: EditorProps) => {
           <Button
             handleClick={async () => {
               postDocument(titleRef.current?.value, textAreaRef.current?.value);
-              // titles = await supabase.from("documents").select("title, id");
-
-              // fetch datata again here aswell after save
             }}
             className="saveButton"
             text="Save"
           />
-          <select onChange={(e) => handleDocumentChange(e)}>
-            <option value="" disabled selected>
+          <select
+            defaultValue={"default"}
+            onChange={(e) => handleDocumentChange(e)}
+          >
+            <option value="default" disabled>
               New document
             </option>
             {titles.data?.map((title) => {
