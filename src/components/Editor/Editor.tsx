@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { Button } from "../Button/Button";
 import "./Editor.css";
-
 // import { type } from "@testing-library/user-event/dist/type";
 
 const EditorContainer = styled.div`
@@ -15,16 +14,6 @@ const EditorContainer = styled.div`
 
 
 
-const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL
-  ? import.meta.env.VITE_SUPABASE_URL
-  : "";
-const supabaseKey: string = import.meta.env.VITE_SUPABASE_KEY
-  ? import.meta.env.VITE_SUPABASE_KEY
-  : "";
-const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
-
-const titles = await supabase.from("documents").select("title, id");
-console.log(titles);
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -47,12 +36,58 @@ type EditorProps = {
   setText: Function;
 };
 
+type document = {
+  id: number,
+  text: string,
+  title: string,
+  created_at: string
+};
+
+type titleObject = {
+  id: number,
+  title: string
+};
+
+const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL
+  ? import.meta.env.VITE_SUPABASE_URL
+  : "";
+const supabaseKey: string = import.meta.env.VITE_SUPABASE_KEY
+  ? import.meta.env.VITE_SUPABASE_KEY
+  : "";
+const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
+
+
 let heading: string = "regular";
+let emptyTitles: titleObject[] = [];
 
 export const Editor = (props: EditorProps) => {
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
   const titleRef = React.useRef<HTMLInputElement>(null);
-  const titleSelectRef = React.useRef<HTMLInputElement>(null);
+  const [titles, setTitles]: [titles:titleObject[], setTitles: React.Dispatch<React.SetStateAction<titleObject[]>>] = useState(emptyTitles) //**För att typa titles måste vi type setTitles
+
+
+  const [test, setTest] = useState("HEJ")
+  
+
+  useEffect(() => {
+    fetchTitles()
+    .then((result) => setTitles(result));
+  }, []);
+
+  const fetchTitles = async():Promise<titleObject[]> => {
+    const response = await supabase.from("documents").select("title, id");
+    let titles:titleObject[] = [];
+    if(!response.data) return [];
+    response.data.forEach((fetchedTitle) => {
+      const titleObject:titleObject = {id: 0, title: ""};
+      if(typeof fetchedTitle.id === "number") titleObject.id = fetchedTitle.id;
+      if(typeof fetchedTitle.title === "string") titleObject.title = fetchedTitle.title;
+      titles.push(titleObject);
+    })
+
+
+    return titles;
+  }
 
   const postDocument = async (
     title: string | undefined,
@@ -65,14 +100,7 @@ export const Editor = (props: EditorProps) => {
     console.log(result);
   };
 
-  type document = {
-    id: number,
-    text: string,
-    title: string,
-    created_at: string
-  };
   
-
   const handleDocumentChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -196,6 +224,7 @@ export const Editor = (props: EditorProps) => {
   };
 
   //Object to keep track of which keys are pressed.
+  //****Kan prata om denna funktionen lite mer, att vi typat upp den och att vi använder en object istället för att ha flera olika states.
   const shortCuts: { [key: string]: boolean } = {
     command: false,
     b: false,
@@ -206,13 +235,14 @@ export const Editor = (props: EditorProps) => {
     three: false,
   };
 
-  //prata om det här, att vi typat upp ett event som använder react funktioner
   //function to handle keydown events and set the corresponding key in the shortCuts object to true. If certain combinations of keys are pressed, call the corresponding function.
+
+  //***VISA DETTA EXEMPLET, om vi tar bort type React.KeyboardEvent<HTMLTextAreaElement> så får vi inte tillgång till e.key
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.metaKey) shortCuts["command"] = true;
     if (e.key === "b") shortCuts["b"] = true;
     if (e.key === "i") shortCuts["i"] = true;
-    if (e.key == "0") shortCuts["zero"] = true;
+    if (e.key === "0") shortCuts["zero"] = true;
     if (e.key === "1") shortCuts["one"] = true;
     if (e.key === "2") shortCuts["two"] = true;
     if (e.key === "3") shortCuts["three"] = true;
@@ -260,17 +290,13 @@ export const Editor = (props: EditorProps) => {
     //find the index of the cursor.
     const currentPosition: number | undefined = textArea.selectionStart;
     //find the index of the last linebreak before the cursor.
-    const currentLineIndex: number = 1 + textArea.value
-    .substring(0, currentPosition)
-    .lastIndexOf("\n");
+    const currentLineIndex: number =
+      1 + textArea.value.substring(0, currentPosition).lastIndexOf("\n");
 
 
     if(textArea.value.substring(currentLineIndex).startsWith("###") ) heading = "h3";
     else if(textArea.value.substring(currentLineIndex).startsWith("##") ) heading = "h2";
     else if(textArea.value.substring(currentLineIndex).startsWith("#") ) heading = "h1";
-
-    handleChange(textArea.value);
-
   }
 
   return (
@@ -305,20 +331,20 @@ export const Editor = (props: EditorProps) => {
           <Button
             handleClick={async () => {
               postDocument(titleRef.current?.value, textAreaRef.current?.value);
-              // titles = await supabase.from("documents").select("title, id");
-
-              // fetch datata again here aswell after save
             }}
             className="saveButton"
             text="Save"
           />
-          <select onChange={(e) => handleDocumentChange(e)}>
-            <option value="" disabled selected>
+          <select
+            defaultValue={"default"}
+            onChange={(e) => handleDocumentChange(e)}
+          >
+            <option value="default" disabled>
               New document
             </option>
-            {titles.data?.map((title) => {
+            {titles.map((title) => {
               return (
-                <option value={title.title} id={title.id} key={title.id}>
+                <option value={title.title} id={title.id.toString()} key={title.id}>
                   {title.title}
                 </option>
               );
