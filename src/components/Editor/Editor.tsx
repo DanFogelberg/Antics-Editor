@@ -211,6 +211,25 @@ export const Editor = (props: EditorProps) => {
     if (e.key === "3") shortCuts["three"] = false;
   };
 
+  const handleSelectionChange = (e: React.SyntheticEvent<HTMLTextAreaElement, Event>) => {
+    const textArea: EventTarget= e.currentTarget;  
+
+    console.log(textArea.selectionStart); //Type textarea better!
+
+    //find the index of the cursor.
+    const currentPosition: number | undefined = textArea.selectionStart;
+    //find the index of the last linebreak before the cursor.
+    const currentLineIndex: number = 1 + textArea.value
+    .substring(0, currentPosition)
+    .lastIndexOf("\n");
+
+
+    if(textArea.value.substring(currentLineIndex).startsWith("###") ) heading = "h3";
+    else if(textArea.value.substring(currentLineIndex).startsWith("##") ) heading = "h2";
+    else if(textArea.value.substring(currentLineIndex).startsWith("#") ) heading = "h1";
+
+  }
+
   return (
     <EditorContainer>
       <EditorInterface>
@@ -252,6 +271,7 @@ export const Editor = (props: EditorProps) => {
         onChange={(e) => handleChange(e.target.value)}
         onKeyDown={(e) => handleKeyDown(e)}
         onKeyUp={(e) => handleKeyUp(e)}
+        onSelect={(e) => handleSelectionChange(e)}
         ref={textAreaRef}
       ></TextArea>
     </EditorContainer>
