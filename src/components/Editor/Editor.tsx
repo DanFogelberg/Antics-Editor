@@ -53,7 +53,6 @@ const supabaseKey: string = import.meta.env.VITE_SUPABASE_KEY
 const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
 
 let heading: string = "regular";
-let emptyTitles: titleObject[] = [];
 
 export const Editor = (props: EditorProps) => {
   const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -61,12 +60,13 @@ export const Editor = (props: EditorProps) => {
   const [titles, setTitles]: [
     titles: titleObject[],
     setTitles: React.Dispatch<React.SetStateAction<titleObject[]>>
-  ] = useState(emptyTitles); //**För att typa titles måste vi type setTitles
+  ] = useState<Array<titleObject>>([]); //**För att typa titles måste vi type setTitles
 
   useEffect(() => {
     fetchTitles().then((result) => setTitles(result));
   }, []);
 
+  //** Promise<titleObject>
   const fetchTitles = async (): Promise<titleObject[]> => {
     const response = await supabase.from("documents").select("title, id");
     let titles: titleObject[] = [];
@@ -86,11 +86,12 @@ export const Editor = (props: EditorProps) => {
     title: string | undefined,
     text: string | undefined
   ) => {
+    //** Vi blir tvingade att hantera odefinerade värden
     if (!title || !text) return;
+    //Add error handling.
     const result = await supabase
       .from("documents")
       .insert({ text: text, title: title });
-    console.log(result);
   };
 
   const handleDocumentChange = async (
@@ -104,6 +105,7 @@ export const Editor = (props: EditorProps) => {
 
     if (!response.data) return;
 
+    //** Säkra upp fetchDatan
     const document: document = fetchDataToDocument(response.data[0]);
 
     if (titleRef.current) titleRef.current.value = document.title;
@@ -153,7 +155,7 @@ export const Editor = (props: EditorProps) => {
     handleChange(newText, 2); //Send new text to handleChange to update states and move cursor inside tags.
   };
 
-  //function to place or custom cursive tags and place the cursor inside them
+  //Function to place or custom cursive tags and place the cursor inside them
   const setCursive = () => {
     let text: string = "";
     if (textAreaRef.current) text = textAreaRef.current.value;
@@ -169,10 +171,10 @@ export const Editor = (props: EditorProps) => {
     newText: string,
     positionOffset: number = 0
   ) => {
-    //find the index of the cursor.
+    //Find the index of the cursor.
     const currentPosition: number | undefined =
       textAreaRef.current?.selectionStart;
-    //find the index of the last linebreak before the cursor.
+    //Find the index of the last linebreak before the cursor.
     const currentLineIndex: number = newText
       .substring(0, currentPosition)
       .lastIndexOf("\n");
@@ -260,7 +262,7 @@ export const Editor = (props: EditorProps) => {
     }
   };
 
-  //function to handle keyup events and set the corresponding key in the shortCuts object to false reseting the object.
+  //Function to handle keyup events and set the corresponding key in the shortCuts object to false resetting the object.
   const handleKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.altKey) shortCuts["alternative"] = false;
     if (e.metaKey) shortCuts["command"] = false;
@@ -278,11 +280,9 @@ export const Editor = (props: EditorProps) => {
   ) => {
     const textArea: EventTarget & HTMLTextAreaElement = e.currentTarget;
 
-    console.log(textArea.selectionStart); //Type textarea better!
-
-    //find the index of the cursor.
+    //Find the index of the cursor.
     const currentPosition: number | undefined = textArea.selectionStart;
-    //find the index of the last linebreak before the cursor.
+    //Find the index of the last linebreak before the cursor.
     const currentLineIndex: number =
       1 + textArea.value.substring(0, currentPosition).lastIndexOf("\n");
 

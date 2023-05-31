@@ -17,17 +17,16 @@ type PreviewProps = {
 
 export const Preview = (props: PreviewProps) => {
   const text: string = props.text;
-  console.log(text);
 
-  //makes the text into an array of strings, each string is a line of text.
+  //Makes the text into an array of strings, each string is a line of text.
   const textArray: string[] = text.split("\n");
 
-  //for each line of text, check if it starts with any of the markdown tags. If it does, replace the tag with the corresponding html tag. To be safe while using dangerouslySetInnerHTML we remove all html tags from the text so you cant inject any dangerous code.
+  //For each line of text, check if it starts with any of the markdown tags. If it does, replace the tag with the corresponding html tag. To be safe while using dangerouslySetInnerHTML we remove all html tags from the text so you cant inject any dangerous code.
   return (
     <div>
       <h1>Preview</h1>
       <PreviewContainer>
-        {textArray.map((text, id) => {
+        {textArray.map((text: string, id: number) => {
           //Remove all htmltags for safety.
           while (text.includes("<")) text = text.replace("<", "");
           while (text.includes(">")) text = text.replace(">", "");
