@@ -13,6 +13,8 @@ const EditorContainer = styled.div`
   border: 1px solid black;
 `;
 
+
+
 const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL
   ? import.meta.env.VITE_SUPABASE_URL
   : "";
@@ -63,20 +65,55 @@ export const Editor = (props: EditorProps) => {
     console.log(result);
   };
 
+  type document = {
+    id: number,
+    text: string,
+    title: string,
+    created_at: string
+  };
+  
+
   const handleDocumentChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const option = e.target.selectedOptions[0];
-    const { data, error } = await supabase
+    const response = await supabase
       .from("documents")
       .select("*")
       .eq("id", option.id);
-    console.log(data[0].text); //Add type to remove error.
 
-    if (titleRef.current) titleRef.current.value = data[0].title;
-    if (textAreaRef.current) textAreaRef.current.value = data[0].text;
-    props.setText(data[0].text);
+    if(!response.data) return;
+
+    const document:document = fetchDataToDocument(response.data[0]);
+    
+  
+
+    if (titleRef.current) titleRef.current.value = document.title;
+    if (textAreaRef.current) textAreaRef.current.value = document.text;
+    props.setText(document.text);
   };
+
+  const fetchDataToDocument = (fetchData:{[x: string]: any }) :document => {
+    let id: number = 0;
+    let text: string = "";
+    let title: string = "";
+    let created_at: string = "";
+
+    if(fetchData.id && typeof fetchData.id === typeof "number") id = fetchData.id;
+    if(typeof fetchData.text === typeof "string") text = fetchData.text;
+    if(typeof fetchData.title === typeof "title") title = fetchData.title;
+    if(typeof fetchData.created_at === typeof "string") created_at = fetchData.created_at;
+
+    const document:document = {
+      id: id,
+      text: text,
+      title: title,
+      created_at: created_at
+    }
+
+    return document;
+  }
+
 
   //function to handle select change and set heading to the new value. when u change the select value, the cursor is moved to the end of the text. This is why we call handleChange to move the cursor inside the tags.
   const handleHeading = (newHeading: string) => {
@@ -214,6 +251,7 @@ export const Editor = (props: EditorProps) => {
     if (e.key === "3") shortCuts["three"] = false;
   };
 
+  //Updates heading to the heading of the line when you switch lines.
   const handleSelectionChange = (e: React.SyntheticEvent<HTMLTextAreaElement, Event>) => {
     const textArea: EventTarget= e.currentTarget;  
 
@@ -230,6 +268,8 @@ export const Editor = (props: EditorProps) => {
     if(textArea.value.substring(currentLineIndex).startsWith("###") ) heading = "h3";
     else if(textArea.value.substring(currentLineIndex).startsWith("##") ) heading = "h2";
     else if(textArea.value.substring(currentLineIndex).startsWith("#") ) heading = "h1";
+
+    handleChange(textArea.value);
 
   }
 
