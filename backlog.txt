@@ -4,6 +4,9 @@
 
 3. Create update button and interface
 
-4. fix design 
+4. Fix design 
+
+5. Fix changing selection in editor not immediatly changing heading  
+
 
 
