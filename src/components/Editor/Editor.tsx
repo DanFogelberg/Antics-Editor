@@ -61,7 +61,7 @@ export const Editor = (props: EditorProps) => {
   const [titles, setTitles]: [
     titles: titleObject[],
     setTitles: React.Dispatch<React.SetStateAction<titleObject[]>>
-  ] = useState(emptyTitles); //**För att typa titles måste vi type setTitles
+  ] = useState(emptyTitles); //**För att typa titles  måste vi type setTitles
 
   useEffect(() => {
     fetchTitles().then((result) => setTitles(result));
@@ -215,7 +215,7 @@ export const Editor = (props: EditorProps) => {
   };
 
   //Object to keep track of which keys are pressed.
-  //****Kan prata om denna funktionen lite mer, att vi typat upp den och att vi använder en object istället för att ha flera olika states.
+  //**Kan prata om denna funktionen lite mer, att vi typat upp den och att vi använder en object istället för att ha flera olika states.
   const shortCuts: { [key: string]: boolean } = {
     command: false,
     b: false,
@@ -228,7 +228,7 @@ export const Editor = (props: EditorProps) => {
 
   //function to handle keydown events and set the corresponding key in the shortCuts object to true. If certain combinations of keys are pressed, call the corresponding function.
 
-  //***VISA DETTA EXEMPLET, om vi tar bort type React.KeyboardEvent<HTMLTextAreaElement> så får vi inte tillgång till e.key
+  //**VISA DETTA EXEMPLET, om vi tar bort type React.KeyboardEvent<HTMLTextAreaElement> så får vi inte tillgång till e.key
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.metaKey) shortCuts["command"] = true;
     if (e.key === "b") shortCuts["b"] = true;
@@ -296,7 +296,7 @@ export const Editor = (props: EditorProps) => {
 
   return (
     <div>
-      <h1>Editor</h1>
+      <h1 className="title">Editor</h1>
       <EditorContainer>
         <EditorInterface>
           <div className="headings">

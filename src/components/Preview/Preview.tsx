@@ -25,7 +25,7 @@ export const Preview = (props: PreviewProps) => {
   //for each line of text, check if it starts with any of the markdown tags. If it does, replace the tag with the corresponding html tag. To be safe while using dangerouslySetInnerHTML we remove all html tags from the text so you cant inject any dangerous code.
   return (
     <div>
-      <h1>Preview</h1>
+      <h1 className="title">Preview</h1>
       <PreviewContainer>
         {textArray.map((text, id) => {
           //Remove all htmltags for safety.
